@@ -1,52 +1,64 @@
-import { useState } from "react";
-import type { Todo } from "./type"
+import { useState } from 'react';
+import type { Todo } from './type';
 
 export type TodoItemProps = {
-  todo: Todo,
-  onToggle: (id: string) => void,
-  onDelete: (id: string) => void,
-  onEdit: (id: string, title: string) => void,
-}
+  todo: Todo;
+  onToggle: (id: string) => void;
+  onDelete: (id: string) => void;
+  onEdit: (id: string, title: string) => void;
+};
 
 export function TodoItem({ todo, onToggle, onDelete, onEdit }: TodoItemProps) {
-  const [title, setTitle] = useState(todo.title);
+  const [draft, setDraft] = useState('');
   const [editing, setEditing] = useState(false);
 
-
+  const startEdit = () => {
+    setDraft(todo.title);
+    setEditing(true);
+  };
   const finishEdit = () => {
     setEditing(false);
-    if (title.trim() === '') return;
-    onEdit(todo.id, title);
-  }
-  
+    const title = draft.trim();
+    if (title && title !== todo.title) onEdit(todo.id, title);
+  };
+
   const cancelEdit = () => {
     setEditing(false);
-    setTitle(todo.title);
-  }
-  
+    setDraft('');
+  };
+
   return (
-    <div className="todo-item" onDoubleClick={() => setEditing(true)}>
-      <input type="checkbox" checked={todo.done} onChange={() => onToggle(todo.id)} onClick={(e) => { e.stopPropagation() }} />
+    <div className="todo-item">
+      <input
+        type="checkbox"
+        checked={todo.done}
+        onChange={() => onToggle(todo.id)}
+      />
       {editing ? (
         <input
           type="text"
           autoFocus
-          value={title}
+          value={draft}
           onBlur={finishEdit}
-          onChange={(e) => setTitle(e.target.value)}
+          onChange={(e) => setDraft(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === 'Enter') {
               finishEdit();
-            }
-            else if (e.key === 'Escape') {
+            } else if (e.key === 'Escape') {
               cancelEdit();
             }
           }}
         />
       ) : (
-        <span>{todo.title}</span>
+        <span onDoubleClick={startEdit}>{todo.title}</span>
       )}
-      <button onClick={(e) => { e.stopPropagation(); onDelete(todo.id) }}>Delete</button>
+      <button
+        onClick={() => {
+          onDelete(todo.id);
+        }}
+      >
+        Delete
+      </button>
     </div>
-  )
+  );
 }

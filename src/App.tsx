@@ -1,30 +1,46 @@
-import { useState } from 'react'
-import './App.css'
-import { TodoApp } from './drills/01-todo/TodoApp'
+import { useState } from 'react';
+import './App.css';
+import { TodoApp } from './drills/01-todo/TodoApp';
 
-const MAIN_TABS = [
+type MainTabType = 'todo';
+
+type MainTab = {
+  label: string;
+  type: MainTabType;
+  component: React.ComponentType;
+};
+
+const MAIN_TABS: MainTab[] = [
   {
     label: 'Todo',
-    icon: 'todo',
-    component: <TodoApp />,
+    type: 'todo',
+    component: TodoApp,
   },
-]
+];
 
 function App() {
-  const [selectedTab, setSelectedTab] = useState(MAIN_TABS[0])
+  const [selectedTab, setSelectedTab] = useState('todo');
+  const ActiveComponent = MAIN_TABS.find(
+    (tab) => tab.type === selectedTab,
+  )?.component;
   return (
     <>
       <div className="main-tabs">
         {MAIN_TABS.map((tab) => (
-          <button key={tab.label} onClick={() => setSelectedTab(tab)}>
+          <button
+            key={tab.label}
+            className={selectedTab === tab.type ? 'active' : ''}
+            onClick={() => setSelectedTab(tab.type)}
+          >
             {tab.label}
           </button>
         ))}
       </div>
-    <div className="main-content">
-        {selectedTab.component}
-      </div></>
-  )
+      <div className="main-content">
+        {ActiveComponent ? <ActiveComponent /> : null}
+      </div>
+    </>
+  );
 }
 
-export default App
+export default App;

@@ -1,25 +1,33 @@
-import type { TodoStatus } from "./type";
+import type { TodoStatus } from './type';
 
-type FilterItem = { label: string; value: TodoStatus }
+type FilterItem = { label: string; value: TodoStatus };
+
+const FILTERS: FilterItem[] = [
+  { label: 'All', value: 'all' },
+  { label: 'Active', value: 'active' },
+  { label: 'Completed', value: 'completed' },
+];
 
 export type TodoFilterProps = {
-  activeFilter: TodoStatus,
-  onActiveFilterChange: (filter: TodoStatus) => void,
-}
+  activeFilter: TodoStatus;
+  onActiveFilterChange: (filter: TodoStatus) => void;
+};
 
-export function TodoFilter({ activeFilter, onActiveFilterChange }: TodoFilterProps) {
-  const filters: FilterItem[] = [
-    { label: 'All', value: 'all' },
-    { label: 'Active', value: 'active' },
-    { label: 'Completed', value: 'completed' },
-  ]
+export function TodoFilter({
+  activeFilter,
+  onActiveFilterChange,
+}: TodoFilterProps) {
   return (
     <div>
-      { filters.map((filter) => (
-        <button key={filter.value} className={filter.value === activeFilter ? 'active' : ''} onClick={() => onActiveFilterChange(filter.value)}>
+      {FILTERS.map((filter) => (
+        <button
+          key={filter.value}
+          className={filter.value === activeFilter ? 'active' : ''}
+          onClick={() => onActiveFilterChange(filter.value)}
+        >
           {filter.label}
         </button>
       ))}
     </div>
-  )
+  );
 }

@@ -1,7 +1,8 @@
-import { useState } from "react"
-import type { Todo, TodoStatus } from "./type"
-import { TodoList } from "./TodoList"
-import { TodoFilter } from "./TodoFilter";
+import { useState } from 'react';
+import { TodoFilter } from './TodoFilter';
+import { TodoForm } from './TodoForm';
+import { TodoList } from './TodoList';
+import type { Todo, TodoStatus } from './type';
 
 const getTodosFromLocalStorage = (): Todo[] => {
   try {
@@ -11,11 +12,11 @@ const getTodosFromLocalStorage = (): Todo[] => {
     console.error('Error getting todos from localStorage:', error);
     return [];
   }
-}
+};
 
 const setTodosToLocalStorage = (todos: Todo[]) => {
   localStorage.setItem('todos', JSON.stringify(todos));
-}
+};
 
 export function TodoApp() {
   const [todos, setTodos] = useState<Todo[]>(getTodosFromLocalStorage);
@@ -25,41 +26,59 @@ export function TodoApp() {
     if (activeFilter === 'all') return true;
     if (activeFilter === 'active') return !todo.done;
     return todo.done;
-  })
+  });
+
+  const commit = (newTodos: Todo[]) => {
+    setTodosToLocalStorage(newTodos);
+    setTodos(newTodos);
+  };
 
   const handleAddTodo = (title: string) => {
-    const newTodos = [...todos, { id: crypto.randomUUID(), title, done: false }];
-    setTodosToLocalStorage(newTodos);
-    setTodos(newTodos);
-  }
+    const newTodos = [
+      ...todos,
+      { id: crypto.randomUUID(), title, done: false },
+    ];
+    commit(newTodos);
+  };
+
   const handleToggleTodo = (id: string) => {
-    const newTodos = todos.map((todo) => todo.id === id ? { ...todo, done: !todo.done } : todo);
-    setTodosToLocalStorage(newTodos);
-    setTodos(newTodos);
-  }
+    const newTodos = todos.map((todo) =>
+      todo.id === id ? { ...todo, done: !todo.done } : todo,
+    );
+    commit(newTodos);
+  };
+
   const handleDeleteTodo = (id: string) => {
     const newTodos = todos.filter((todo) => todo.id !== id);
-    setTodosToLocalStorage(newTodos);
-    setTodos(newTodos);
-  }
+    commit(newTodos);
+  };
+
   const handleEditTodo = (id: string, title: string) => {
-    const newTodos = todos.map((todo) => todo.id === id ? { ...todo, title } : todo);
-    setTodosToLocalStorage(newTodos);
-    setTodos(newTodos);
-  }
+    const newTodos = todos.map((todo) =>
+      todo.id === id ? { ...todo, title } : todo,
+    );
+    commit(newTodos);
+  };
+
+  const handleClearCompleted = () => {
+    const newTodos = todos.filter((todo) => !todo.done);
+    commit(newTodos);
+  };
+
   return (
     <div className="todo-app">
       <TodoFilter
         activeFilter={activeFilter}
         onActiveFilterChange={setActiveFilter}
       />
+      <TodoForm onAdd={handleAddTodo} />
       <TodoList
         todos={filteredTodos}
         onToggle={handleToggleTodo}
         onDelete={handleDeleteTodo}
         onEdit={handleEditTodo}
-        onAdd={handleAddTodo}
+        onClearCompleted={handleClearCompleted}
       />
     </div>
-  )
+  );
 }

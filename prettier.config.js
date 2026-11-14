@@ -1,10 +1,8 @@
-/** @type {import("prettier').Config} */
+/** @type {import('prettier').Config} */
 export default {
   semi: true,
   singleQuote: true,
   trailingComma: 'all',
   printWidth: 80,
-  plugins: [
-    'prettier-plugin-organize-imports',
-  ],
+  plugins: ['prettier-plugin-organize-imports'],
 };
