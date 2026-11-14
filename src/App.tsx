@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import './App.css';
 import { TodoApp } from './drills/01-todo/TodoApp';
+import { KeyBugDemo } from './drills/02-key-bug/KeyBugDemo';
 
-type MainTabId = 'todo';
+type MainTabId = 'todo' | 'key-bug';
 
 type MainTab = {
   label: string;
@@ -16,6 +17,11 @@ const MAIN_TABS: MainTab[] = [
     id: 'todo',
     component: TodoApp,
   },
+  {
+    label: 'Key Bug',
+    id: 'key-bug',
+    component: KeyBugDemo,
+  },
 ];
 
 function App() {
@@ -28,7 +34,7 @@ function App() {
       <div className="main-tabs">
         {MAIN_TABS.map((tab) => (
           <button
-            key={tab.label}
+            key={tab.id}
             className={selectedTab === tab.id ? 'active' : ''}
             onClick={() => setSelectedTab(tab.id)}
           >

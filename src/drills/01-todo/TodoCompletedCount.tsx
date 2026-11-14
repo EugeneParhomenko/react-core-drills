@@ -1,16 +1,15 @@
-import type { Todo } from './type';
-
 export type TodoCompletedCountProps = {
-  todos: Todo[];
+  itemsLeft: number;
+  hasCompleted: boolean;
   onClearCompleted: () => void;
 };
 
 export function TodoCompletedCount({
-  todos,
+  itemsLeft,
+  hasCompleted,
   onClearCompleted,
 }: TodoCompletedCountProps) {
-  const itemsLeft = todos.filter((todo) => !todo.done).length;
-  const hasCompleted = todos.some((todo) => todo.done);
+  
   return (
     <div className="todo-list-footer">
       <span>{itemsLeft} items left</span>

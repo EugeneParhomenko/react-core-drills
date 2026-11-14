@@ -35,6 +35,9 @@ export function TodoApp() {
     return todo.done;
   });
 
+  const itemsLeft = todos.filter((todo) => !todo.done).length;
+  const hasCompleted = todos.some((todo) => todo.done);
+
   const commit = (newTodos: Todo[]) => {
     setTodosToLocalStorage(newTodos);
     setTodos(newTodos);
@@ -86,7 +89,8 @@ export function TodoApp() {
         onEdit={handleEditTodo}
       />
       <TodoCompletedCount
-        todos={todos}
+        itemsLeft={itemsLeft}
+        hasCompleted={hasCompleted}
         onClearCompleted={handleClearCompleted}
       />
     </div>
