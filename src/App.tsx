@@ -2,26 +2,26 @@ import { useState } from 'react';
 import './App.css';
 import { TodoApp } from './drills/01-todo/TodoApp';
 
-type MainTabType = 'todo';
+type MainTabId = 'todo';
 
 type MainTab = {
   label: string;
-  type: MainTabType;
+  id: MainTabId;
   component: React.ComponentType;
 };
 
 const MAIN_TABS: MainTab[] = [
   {
     label: 'Todo',
-    type: 'todo',
+    id: 'todo',
     component: TodoApp,
   },
 ];
 
 function App() {
-  const [selectedTab, setSelectedTab] = useState('todo');
+  const [selectedTab, setSelectedTab] = useState<MainTabId>('todo');
   const ActiveComponent = MAIN_TABS.find(
-    (tab) => tab.type === selectedTab,
+    (tab) => tab.id === selectedTab,
   )?.component;
   return (
     <>
@@ -29,8 +29,8 @@ function App() {
         {MAIN_TABS.map((tab) => (
           <button
             key={tab.label}
-            className={selectedTab === tab.type ? 'active' : ''}
-            onClick={() => setSelectedTab(tab.type)}
+            className={selectedTab === tab.id ? 'active' : ''}
+            onClick={() => setSelectedTab(tab.id)}
           >
             {tab.label}
           </button>

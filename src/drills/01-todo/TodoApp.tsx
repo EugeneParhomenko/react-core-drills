@@ -1,12 +1,15 @@
 import { useState } from 'react';
+import { TodoCompletedCount } from './TodoCompletedCount';
 import { TodoFilter } from './TodoFilter';
 import { TodoForm } from './TodoForm';
 import { TodoList } from './TodoList';
 import type { Todo, TodoStatus } from './type';
 
+const TODOS_LOCAL_STORAGE_KEY = 'todos';
+
 const getTodosFromLocalStorage = (): Todo[] => {
   try {
-    const todos = localStorage.getItem('todos');
+    const todos = localStorage.getItem(TODOS_LOCAL_STORAGE_KEY);
     return todos ? JSON.parse(todos) : [];
   } catch (error) {
     console.error('Error getting todos from localStorage:', error);
@@ -15,7 +18,11 @@ const getTodosFromLocalStorage = (): Todo[] => {
 };
 
 const setTodosToLocalStorage = (todos: Todo[]) => {
-  localStorage.setItem('todos', JSON.stringify(todos));
+  try {
+    localStorage.setItem(TODOS_LOCAL_STORAGE_KEY, JSON.stringify(todos));
+  } catch (error) {
+    console.error('Error setting todos to localStorage:', error);
+  }
 };
 
 export function TodoApp() {
@@ -77,6 +84,9 @@ export function TodoApp() {
         onToggle={handleToggleTodo}
         onDelete={handleDeleteTodo}
         onEdit={handleEditTodo}
+      />
+      <TodoCompletedCount
+        todos={todos}
         onClearCompleted={handleClearCompleted}
       />
     </div>

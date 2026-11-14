@@ -6,17 +6,9 @@ export type TodoListProps = {
   onToggle: (id: string) => void;
   onDelete: (id: string) => void;
   onEdit: (id: string, title: string) => void;
-  onClearCompleted: () => void;
 };
 
-export function TodoList({
-  todos,
-  onToggle,
-  onDelete,
-  onEdit,
-  onClearCompleted,
-}: TodoListProps) {
-  const itemsLeft = todos.filter((todo) => !todo.done).length;
+export function TodoList({ todos, onToggle, onDelete, onEdit }: TodoListProps) {
   return (
     <>
       <div className="todo-list-items">
@@ -29,10 +21,6 @@ export function TodoList({
             onEdit={onEdit}
           />
         ))}
-      </div>
-      <div className="todo-list-footer">
-        <span>{itemsLeft} items left</span>
-        <button onClick={() => onClearCompleted()}>Clear Completed</button>
       </div>
     </>
   );
