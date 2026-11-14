@@ -1,0 +1,65 @@
+import { useState } from "react"
+import type { Todo, TodoStatus } from "./type"
+import { TodoList } from "./TodoList"
+import { TodoFilter } from "./TodoFilter";
+
+const getTodosFromLocalStorage = (): Todo[] => {
+  try {
+    const todos = localStorage.getItem('todos');
+    return todos ? JSON.parse(todos) : [];
+  } catch (error) {
+    console.error('Error getting todos from localStorage:', error);
+    return [];
+  }
+}
+
+const setTodosToLocalStorage = (todos: Todo[]) => {
+  localStorage.setItem('todos', JSON.stringify(todos));
+}
+
+export function TodoApp() {
+  const [todos, setTodos] = useState<Todo[]>(getTodosFromLocalStorage);
+  const [activeFilter, setActiveFilter] = useState<TodoStatus>('all');
+
+  const filteredTodos = todos.filter((todo) => {
+    if (activeFilter === 'all') return true;
+    if (activeFilter === 'active') return !todo.done;
+    return todo.done;
+  })
+
+  const handleAddTodo = (title: string) => {
+    const newTodos = [...todos, { id: crypto.randomUUID(), title, done: false }];
+    setTodosToLocalStorage(newTodos);
+    setTodos(newTodos);
+  }
+  const handleToggleTodo = (id: string) => {
+    const newTodos = todos.map((todo) => todo.id === id ? { ...todo, done: !todo.done } : todo);
+    setTodosToLocalStorage(newTodos);
+    setTodos(newTodos);
+  }
+  const handleDeleteTodo = (id: string) => {
+    const newTodos = todos.filter((todo) => todo.id !== id);
+    setTodosToLocalStorage(newTodos);
+    setTodos(newTodos);
+  }
+  const handleEditTodo = (id: string, title: string) => {
+    const newTodos = todos.map((todo) => todo.id === id ? { ...todo, title } : todo);
+    setTodosToLocalStorage(newTodos);
+    setTodos(newTodos);
+  }
+  return (
+    <div className="todo-app">
+      <TodoFilter
+        activeFilter={activeFilter}
+        onActiveFilterChange={setActiveFilter}
+      />
+      <TodoList
+        todos={filteredTodos}
+        onToggle={handleToggleTodo}
+        onDelete={handleDeleteTodo}
+        onEdit={handleEditTodo}
+        onAdd={handleAddTodo}
+      />
+    </div>
+  )
+}
