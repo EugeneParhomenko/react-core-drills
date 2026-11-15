@@ -60,3 +60,12 @@ input {
   color: #666;
   cursor: not-allowed;
 }
+
+.profile-page-saved-profile {
+  background-color: #f0f0f0;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #ccc;
+  white-space: break-spaces;
+  text-align: left;
+}

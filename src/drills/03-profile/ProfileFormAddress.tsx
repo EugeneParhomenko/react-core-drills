@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import type { ProfileAddress } from './type';
 
 export type ProfileFormAddressProps = {
@@ -10,15 +9,7 @@ export function ProfileFormAddress({
   address,
   onAddressChange,
 }: ProfileFormAddressProps) {
-  const [{ city, street }, setAddress] = useState<ProfileAddress>(address);
-  const handleCityChange = (city: string) => {
-    setAddress({ ...address, city });
-    onAddressChange({ ...address, city });
-  };
-  const handleStreetChange = (street: string) => {
-    setAddress({ ...address, street });
-    onAddressChange({ ...address, street });
-  };
+  const { city, street } = address;
   return (
     <div className="profile-form-address">
       <label>
@@ -26,7 +17,9 @@ export function ProfileFormAddress({
         <input
           type="text"
           value={city}
-          onChange={(event) => handleCityChange(event.target.value)}
+          onChange={(event) =>
+            onAddressChange({ ...address, city: event.target.value })
+          }
         />
       </label>
       <label>
@@ -34,7 +27,9 @@ export function ProfileFormAddress({
         <input
           type="text"
           value={street}
-          onChange={(event) => handleStreetChange(event.target.value)}
+          onChange={(event) =>
+            onAddressChange({ ...address, street: event.target.value })
+          }
         />
       </label>
     </div>

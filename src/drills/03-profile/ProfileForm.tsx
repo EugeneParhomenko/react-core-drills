@@ -1,52 +1,46 @@
 import { useState } from 'react';
 import { ProfileFormAddress } from './ProfileFormAddress';
 import { ProfileFormSkills } from './ProfileFormSkills';
-import type { EditableProfile, ProfileAddress } from './type';
+import type { Profile } from './type';
 
-export type ProfileFormProps = {
-  editableProfile: EditableProfile;
-  onEditableProfileChange: (editableProfile: EditableProfile) => void;
+const getInitialProfile = (): Profile => ({
+  name: '',
+  email: '',
+  address: { city: '', street: '' },
+  skills: [],
+});
+
+const validateName = (name: string) => {
+  return name.trim().length > 0;
+};
+const validateEmail = (email: string) => {
+  return email.length > 0 && email.includes('@');
 };
 
-export function ProfileForm({
-  editableProfile,
-  onEditableProfileChange,
-}: ProfileFormProps) {
-  const [profile, setProfile] = useState<EditableProfile>(editableProfile);
+export type ProfileFormProps = {
+  onSave: (profile: Profile) => void;
+  onCancel: () => void;
+};
 
-  const onNameChange = (name: string) => {
-    const newProfile = { ...profile, name };
-    commitProfileChange(newProfile);
-  };
+export function ProfileForm({ onSave, onCancel }: ProfileFormProps) {
+  const [profile, setProfile] = useState<Profile>(getInitialProfile);
+  const isValid = validateName(profile.name) && validateEmail(profile.email);
 
-  const onEmailChange = (email: string) => {
-    const newProfile = { ...profile, email };
-    commitProfileChange(newProfile);
-  };
-
-  const onAddressChange = (address: ProfileAddress) => {
-    const newProfile = { ...profile, address };
-    commitProfileChange(newProfile);
-  };
-
-  const onSkillsChange = (skills: string[]) => {
-    const newProfile = { ...profile, skills };
-    commitProfileChange(newProfile);
-  };
-
-  const commitProfileChange = (profile: EditableProfile) => {
-    setProfile(profile);
-    onEditableProfileChange(profile);
+  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    onSave(profile);
   };
 
   return (
-    <form>
+    <form onSubmit={onSubmit}>
       <label>
         <span>Name:</span>
         <input
           type="text"
           value={profile.name}
-          onChange={(event) => onNameChange(event.target.value)}
+          onChange={(event) =>
+            setProfile({ ...profile, name: event.target.value })
+          }
         />
       </label>
       <label>
@@ -54,17 +48,27 @@ export function ProfileForm({
         <input
           type="email"
           value={profile.email}
-          onChange={(event) => onEmailChange(event.target.value)}
+          onChange={(event) =>
+            setProfile({ ...profile, email: event.target.value })
+          }
         />
       </label>
       <ProfileFormAddress
         address={profile.address}
-        onAddressChange={onAddressChange}
+        onAddressChange={(address) => setProfile({ ...profile, address })}
       />
       <ProfileFormSkills
         skills={profile.skills}
-        onSkillsChange={onSkillsChange}
+        onSkillsChange={(skills) => setProfile({ ...profile, skills })}
       />
+      <div className="profile-form-controls">
+        <button type="submit" disabled={!isValid}>
+          Save
+        </button>
+        <button type="button" onClick={onCancel}>
+          Cancel
+        </button>
+      </div>
     </form>
   );
 }

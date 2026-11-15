@@ -1,8 +1,4 @@
-export interface Profile extends EditableProfile {
-  id: string;
-}
-
-export interface EditableProfile {
+export interface Profile {
   name: string;
   email: string;
   address: ProfileAddress;

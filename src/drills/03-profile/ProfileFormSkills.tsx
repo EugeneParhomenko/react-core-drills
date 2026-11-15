@@ -9,34 +9,31 @@ export function ProfileFormSkills({
   skills,
   onSkillsChange,
 }: ProfileFormSkillsProps) {
-  const [editableSkills, setEditableSkills] = useState<string[]>([...skills]);
   const [newSkill, setNewSkill] = useState<string | null>(null);
 
   const handleAddNewSkill = (skill: string) => {
     const trimmedSkill = skill.trim();
     if (trimmedSkill.length > 0) {
-      const newSkills = [...editableSkills, trimmedSkill];
-      setEditableSkills(newSkills);
+      const newSkills = [...skills, trimmedSkill];
       onSkillsChange(newSkills);
     }
   };
 
   const handleSkillRemove = (skill: string) => {
-    const newSkills = editableSkills.filter((s) => s !== skill);
-    setEditableSkills(newSkills);
+    const newSkills = skills.filter((s) => s !== skill);
     onSkillsChange(newSkills);
   };
 
   const handleNewSkillKeyUp = (
     event: React.KeyboardEvent<HTMLInputElement>,
   ) => {
+    if (newSkill == null) return;
     if (event.key === 'Enter') {
-      if (newSkill !== null) {
-        const trimmedNewSkill = newSkill.trim();
-        if (trimmedNewSkill.length > 0) {
-          handleAddNewSkill(trimmedNewSkill);
-          setNewSkill(null);
-        }
+      const trimmedNewSkill = newSkill.trim();
+      const existingSkill = skills.find((s) => s === trimmedNewSkill);
+      if (trimmedNewSkill.length > 0 && !existingSkill) {
+        handleAddNewSkill(trimmedNewSkill);
+        setNewSkill(null);
       }
     } else if (event.key === 'Escape') {
       setNewSkill(null);
@@ -49,10 +46,12 @@ export function ProfileFormSkills({
 
   return (
     <div className="profile-skills">
-      {editableSkills.map((skill) => (
+      {skills.map((skill) => (
         <div key={skill} className="profile-skill">
           <span>{skill}</span>
-          <button onClick={() => handleSkillRemove(skill)}>✕</button>
+          <button type="button" onClick={() => handleSkillRemove(skill)}>
+            ✕
+          </button>
         </div>
       ))}
       {newSkill !== null ? (
@@ -66,7 +65,9 @@ export function ProfileFormSkills({
           />
         </label>
       ) : (
-        <button onClick={handleNewSkillClick}>+</button>
+        <button type="button" onClick={handleNewSkillClick}>
+          +
+        </button>
       )}
     </div>
   );
