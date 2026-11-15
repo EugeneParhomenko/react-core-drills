@@ -9,7 +9,6 @@ export function TodoCompletedCount({
   hasCompleted,
   onClearCompleted,
 }: TodoCompletedCountProps) {
-  
   return (
     <div className="todo-list-footer">
       <span>{itemsLeft} items left</span>

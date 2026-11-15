@@ -33,10 +33,7 @@ export function KeyBugDemo() {
   const addPersonAtStart = () => {
     const id = nextId;
     setNextId((value) => value + 1);
-    setPeople((current) => [
-      { id, name: `Нова ${id}` },
-      ...current,
-    ]);
+    setPeople((current) => [{ id, name: `Нова ${id}` }, ...current]);
   };
 
   return (
@@ -75,7 +72,8 @@ export function KeyBugDemo() {
       <div
         className={`key-bug-demo__step ${keyMode === 'id' ? 'key-bug-demo__step--active' : ''}`}
       >
-        <strong>Крок 2:</strong> key={'{person.id}'} — нотатки залишаються з іменем
+        <strong>Крок 2:</strong> key={'{person.id}'} — нотатки залишаються з
+        іменем
         <button
           type="button"
           onClick={() => setKeyMode('id')}
@@ -88,7 +86,7 @@ export function KeyBugDemo() {
       <div className="key-bug-list">
         {people.map((person, index) => (
           <Row
-            key={keyMode === 'index' ? index : person.id}
+            key={keyMode === 'index' ? `idx_${index}` : `id_${person.id}`}
             name={person.name}
           />
         ))}

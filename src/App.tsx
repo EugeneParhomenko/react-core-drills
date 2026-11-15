@@ -2,8 +2,9 @@ import { useState } from 'react';
 import './App.css';
 import { TodoApp } from './drills/01-todo/TodoApp';
 import { KeyBugDemo } from './drills/02-key-bug/KeyBugDemo';
+import { ProfilePage } from './drills/03-profile/ProfilePage';
 
-type MainTabId = 'todo' | 'key-bug';
+type MainTabId = 'todo' | 'key-bug' | 'profile';
 
 type MainTab = {
   label: string;
@@ -21,6 +22,11 @@ const MAIN_TABS: MainTab[] = [
     label: 'Key Bug',
     id: 'key-bug',
     component: KeyBugDemo,
+  },
+  {
+    label: 'Profile',
+    id: 'profile',
+    component: ProfilePage,
   },
 ];
 
