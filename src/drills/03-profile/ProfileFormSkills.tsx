@@ -29,6 +29,7 @@ export function ProfileFormSkills({
   ) => {
     if (newSkill == null) return;
     if (event.key === 'Enter') {
+      event.preventDefault();
       const trimmedNewSkill = newSkill.trim();
       const existingSkill = skills.find((s) => s === trimmedNewSkill);
       if (trimmedNewSkill.length > 0 && !existingSkill) {

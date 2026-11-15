@@ -7,7 +7,7 @@ export function ProfilePage() {
   const [formKey, setFormKey] = useState(0);
   const [savedProfile, setSavedProfile] = useState<Profile | null>(null);
 
-  const onCancel = () => {
+  const handleCancel = () => {
     setFormKey(formKey + 1);
     setSavedProfile(null);
   };
@@ -19,7 +19,7 @@ export function ProfilePage() {
         <ProfileForm
           key={formKey}
           onSave={setSavedProfile}
-          onCancel={onCancel}
+          onCancel={handleCancel}
         />
       </div>
       {savedProfile && (

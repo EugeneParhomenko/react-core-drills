@@ -26,13 +26,13 @@ export function ProfileForm({ onSave, onCancel }: ProfileFormProps) {
   const [profile, setProfile] = useState<Profile>(getInitialProfile);
   const isValid = validateName(profile.name) && validateEmail(profile.email);
 
-  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     onSave(profile);
   };
 
   return (
-    <form onSubmit={onSubmit}>
+    <form onSubmit={handleSubmit}>
       <label>
         <span>Name:</span>
         <input
