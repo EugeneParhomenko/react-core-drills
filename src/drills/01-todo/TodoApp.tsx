@@ -4,14 +4,21 @@ import { TodoCompletedCount } from './TodoCompletedCount';
 import { TodoFilter } from './TodoFilter';
 import { TodoForm } from './TodoForm';
 import { TodoList } from './TodoList';
-import { todosReducer } from './todosReducer';
+import {
+  TODOS_ADDED,
+  TODOS_CLEARED_COMPLETED,
+  TODOS_DELETED,
+  TODOS_EDITED,
+  TODOS_TOGGLED,
+  todosReducer,
+} from './todosReducer';
 import type { Todo, TodoStatus } from './type';
 
 const TODOS_LOCAL_STORAGE_KEY = 'todos';
 
-const getTodosFromLocalStorage = (): Todo[] => {
+const getTodosFromLocalStorage = (key: string): Todo[] => {
   try {
-    const todos = localStorage.getItem(TODOS_LOCAL_STORAGE_KEY);
+    const todos = localStorage.getItem(key);
     return todos ? JSON.parse(todos) : [];
   } catch (error) {
     console.error('Error getting todos from localStorage:', error);
@@ -19,9 +26,9 @@ const getTodosFromLocalStorage = (): Todo[] => {
   }
 };
 
-const setTodosToLocalStorage = (todos: Todo[]) => {
+const setTodosToLocalStorage = (key: string, todos: Todo[]) => {
   try {
-    localStorage.setItem(TODOS_LOCAL_STORAGE_KEY, JSON.stringify(todos));
+    localStorage.setItem(key, JSON.stringify(todos));
   } catch (error) {
     console.error('Error setting todos to localStorage:', error);
   }
@@ -31,7 +38,8 @@ export function TodoApp() {
   const [activeFilter, setActiveFilter] = useState<TodoStatus>('all');
   const [todos, dispatch] = useReducer(
     todosReducer,
-    getTodosFromLocalStorage(),
+    TODOS_LOCAL_STORAGE_KEY,
+    getTodosFromLocalStorage,
   );
 
   const filteredTodos = todos.filter((todo) => {
@@ -44,27 +52,30 @@ export function TodoApp() {
   const hasCompleted = todos.some((todo) => todo.done);
 
   useEffect(() => {
-    setTodosToLocalStorage(todos);
+    setTodosToLocalStorage(TODOS_LOCAL_STORAGE_KEY, todos);
   }, [todos]);
 
   const handleAddTodo = (title: string) => {
-    dispatch({ type: 'ADD_TODO', payload: { title } });
+    dispatch({
+      type: TODOS_ADDED,
+      payload: { id: crypto.randomUUID(), title },
+    });
   };
 
   const handleToggleTodo = (id: string) => {
-    dispatch({ type: 'TOGGLE_TODO', payload: { id } });
+    dispatch({ type: TODOS_TOGGLED, payload: { id } });
   };
 
   const handleDeleteTodo = (id: string) => {
-    dispatch({ type: 'DELETE_TODO', payload: { id } });
+    dispatch({ type: TODOS_DELETED, payload: { id } });
   };
 
   const handleEditTodo = (id: string, title: string) => {
-    dispatch({ type: 'EDIT_TODO', payload: { id, title } });
+    dispatch({ type: TODOS_EDITED, payload: { id, title } });
   };
 
   const handleClearCompleted = () => {
-    dispatch({ type: 'CLEAR_COMPLETED_TODOS' });
+    dispatch({ type: TODOS_CLEARED_COMPLETED });
   };
 
   return (

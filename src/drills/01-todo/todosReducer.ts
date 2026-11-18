@@ -1,27 +1,33 @@
 import type { Todo } from './type';
 
-type AddTodoAction = {
-  type: 'ADD_TODO';
-  payload: { title: string };
-};
+export const TODOS_ADDED = 'todos/added';
+export const TODOS_TOGGLED = 'todos/toggled';
+export const TODOS_DELETED = 'todos/deleted';
+export const TODOS_EDITED = 'todos/edited';
+export const TODOS_CLEARED_COMPLETED = 'todos/clearedCompleted';
 
-type ToggleTodoAction = {
-  type: 'TOGGLE_TODO';
-  payload: { id: string };
-};
-
-type DeleteTodoAction = {
-  type: 'DELETE_TODO';
-  payload: { id: string };
-};
-
-type EditTodoAction = {
-  type: 'EDIT_TODO';
+export type AddTodoAction = {
+  type: typeof TODOS_ADDED;
   payload: { id: string; title: string };
 };
 
-type ClearCompletedAction = {
-  type: 'CLEAR_COMPLETED_TODOS';
+export type ToggleTodoAction = {
+  type: typeof TODOS_TOGGLED;
+  payload: { id: string };
+};
+
+export type DeleteTodoAction = {
+  type: typeof TODOS_DELETED;
+  payload: { id: string };
+};
+
+export type EditTodoAction = {
+  type: typeof TODOS_EDITED;
+  payload: { id: string; title: string };
+};
+
+export type ClearCompletedAction = {
+  type: typeof TODOS_CLEARED_COMPLETED;
 };
 
 export type TodoAction =
@@ -33,34 +39,35 @@ export type TodoAction =
 
 export function todosReducer(todos: Todo[], action: TodoAction): Todo[] {
   switch (action.type) {
-    case 'ADD_TODO': {
-      const { title } = action.payload;
+    case TODOS_ADDED: {
+      const { title, id } = action.payload;
       const newTodo: Todo = {
-        id: crypto.randomUUID(),
+        id,
         title,
         done: false,
       };
       return [...todos, newTodo];
     }
-    case 'TOGGLE_TODO': {
+    case TODOS_TOGGLED: {
       const { id } = action.payload;
       return todos.map((todo) =>
         todo.id === id ? { ...todo, done: !todo.done } : todo,
       );
     }
-    case 'DELETE_TODO': {
+    case TODOS_DELETED: {
       const { id } = action.payload;
       return todos.filter((todo) => todo.id !== id);
     }
-    case 'EDIT_TODO': {
+    case TODOS_EDITED: {
       const { id, title } = action.payload;
       return todos.map((todo) => (todo.id === id ? { ...todo, title } : todo));
     }
-    case 'CLEAR_COMPLETED_TODOS': {
+    case TODOS_CLEARED_COMPLETED: {
       return todos.filter((todo) => !todo.done);
     }
     default: {
-      throw new Error(`Unhandled action type`);
+      const unhandled: never = action;
+      throw new Error(`Unhandled action: ${JSON.stringify(unhandled)}`);
     }
   }
 }
