@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import './HooksDemoPage.css';
 import type { UsersApiResponse } from './types';
 import { useDebounce } from './useDebounce';
@@ -6,22 +5,16 @@ import { useFetch } from './useFetch';
 import { useLocalStorage } from './useLocalStorage';
 import { UsersList } from './UsersList';
 
-const baseUrl = 'https://dummyjson.com/users/search?q=';
-const storageKey = 'HOOKS_DEMO_SEARCH_TERM';
+const BASE_URL = 'https://dummyjson.com/users/search?q=';
+const STORAGE_KEY = 'HOOKS_DEMO_SEARCH_TERM';
 
 export function HooksDemoPage() {
-  const [value, setValue] = useLocalStorage<string>(storageKey, '');
-  const [searchTerm, setSearchTerm] = useState<string>(value);
-  const debouncedSearchTerm = useDebounce<string>(baseUrl + value, 300);
-  const { data, error, status } = useFetch<UsersApiResponse | null>(
-    debouncedSearchTerm,
-  );
-
-  function handleSearch(event: React.ChangeEvent<HTMLInputElement>) {
-    const searchValue = event.target.value;
-    setSearchTerm(searchValue);
-    setValue(searchValue);
-  }
+  const [value, setValue] = useLocalStorage<string>(STORAGE_KEY, '');
+  const searchTerm = useDebounce<string>(value.trim(), 300);
+  const url = searchTerm
+    ? `${BASE_URL}${encodeURIComponent(searchTerm)}`
+    : null;
+  const { data, error, status } = useFetch<UsersApiResponse>(url);
 
   return (
     <div className="hooks-demo">
@@ -38,8 +31,8 @@ export function HooksDemoPage() {
           className="hooks-demo__search-input"
           type="search"
           placeholder="Type a name or email…"
-          value={searchTerm}
-          onChange={handleSearch}
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
           autoComplete="off"
         />
       </div>

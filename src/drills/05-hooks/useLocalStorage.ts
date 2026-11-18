@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useEffectEvent, useState } from 'react';
 
 type CallbackValue<T> = (prev: T) => T;
 type SetValueAction<T> = T | CallbackValue<T>;
@@ -10,20 +10,9 @@ export function useLocalStorage<T>(
 ): [T, SetValue<T>] {
   const [storedValue, setStoredValue] = useState<T>(getFromLocalStorage);
 
-  function setValue(valueOrCallback: SetValueAction<T>): void {
-    setStoredValue((prev: T) => {
-      const newValue =
-        typeof valueOrCallback === 'function'
-          ? (valueOrCallback as CallbackValue<T>)(prev)
-          : valueOrCallback;
-      setToLocalStorage(newValue);
-      return newValue;
-    });
-  }
-
-  function setToLocalStorage(valueToLocalStorage: T): void {
+  function setToLocalStorage(keyToStore: string, valueToStore: T): void {
     try {
-      localStorage.setItem(key, JSON.stringify(valueToLocalStorage));
+      localStorage.setItem(keyToStore, JSON.stringify(valueToStore));
     } catch (error) {
       console.error(error);
     }
@@ -39,6 +28,15 @@ export function useLocalStorage<T>(
     }
   }
 
-  const value = storedValue;
-  return [value, setValue];
+  const onSetToLocalStorage = useEffectEvent(
+    (keyToStore: string, valueToStore: T) => {
+      setToLocalStorage(keyToStore, valueToStore);
+    },
+  );
+
+  useEffect(() => {
+    onSetToLocalStorage(key, storedValue);
+  }, [key, storedValue]);
+
+  return [storedValue, setStoredValue];
 }

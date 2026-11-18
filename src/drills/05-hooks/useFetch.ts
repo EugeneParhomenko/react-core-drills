@@ -8,26 +8,45 @@ type UseFetchResult<T> = {
   status: UseFetchStatus;
 };
 
+type State<T> = { url: string | null; data: T | null; error: Error | null };
+
 export function useFetch<T>(url: string | null): UseFetchResult<T> {
-  const [data, setData] = useState<T | null>(null);
-  const [error, setError] = useState<Error | null>(null);
-  const [status, setStatus] = useState<UseFetchStatus>(
-    url ? 'loading' : 'idle',
-  );
+  const [state, setState] = useState<State<T>>({
+    url: null,
+    data: null,
+    error: null,
+  });
 
   useEffect(() => {
     if (!url) return;
     const controller = new AbortController();
-    fetch(url, { signal: controller.signal })
-      .then((response) => response.json())
-      .then(setData)
-      .catch(setError)
-      .finally(() => setStatus('success'));
 
-    return () => {
-      controller.abort();
-    };
+    fetch(url, { signal: controller.signal })
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json() as Promise<T>;
+      })
+      .then((data) => setState({ url, data, error: null }))
+      .catch((error: Error) => {
+        if (controller.signal.aborted) return;
+        setState({ url, data: null, error });
+      });
+
+    return () => controller.abort();
   }, [url]);
 
-  return { data, error, status };
+  const isCurrent = state.url === url;
+  const status: UseFetchStatus = !url
+    ? 'idle'
+    : !isCurrent
+      ? 'loading'
+      : state.error
+        ? 'error'
+        : 'success';
+
+  return {
+    data: isCurrent ? state.data : null,
+    error: isCurrent ? state.error : null,
+    status,
+  };
 }
