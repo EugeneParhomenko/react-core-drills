@@ -16,9 +16,10 @@ export function useLapTimer() {
   const isRunning = lapStartedAt !== null;
 
   function start() {
-    setNow(performance.now());
+    const now = performance.now();
+    setNow(now);
     setLapStartedAt((lapStartedAt) =>
-      lapStartedAt === null ? performance.now() : lapStartedAt,
+      lapStartedAt === null ? now : lapStartedAt,
     );
   }
 
@@ -41,6 +42,7 @@ export function useLapTimer() {
       lapStartedAt === null ? baseLapTime : baseLapTime + (now - lapStartedAt);
     setBaseLapTime(0);
     setLapStartedAt(lapStartedAt === null ? null : now);
+    setNow(now);
     return measured;
   }
 

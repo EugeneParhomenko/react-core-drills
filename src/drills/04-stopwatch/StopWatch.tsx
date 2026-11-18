@@ -11,6 +11,13 @@ export function StopWatch() {
   const activeLapTime = formatLapTime(lapTime);
 
   useEffect(() => {
+    const original = document.title;
+    return () => {
+      document.title = original;
+    };
+  }, []);
+
+  useEffect(() => {
     if (isRunning) {
       document.title = `StopWatch - ${activeLapTime}`;
     } else {
