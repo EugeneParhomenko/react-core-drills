@@ -4,8 +4,9 @@ import { TodoApp } from './drills/01-todo/TodoApp';
 import { KeyBugDemo } from './drills/02-key-bug/KeyBugDemo';
 import { ProfilePage } from './drills/03-profile/ProfilePage';
 import { StopWatch } from './drills/04-stopwatch/StopWatch';
+import { HooksDemoPage } from './drills/05-hooks/HooksDemoPage';
 
-type MainTabId = 'todo' | 'key-bug' | 'profile' | 'stop-watch';
+type MainTabId = 'todo' | 'key-bug' | 'profile' | 'stop-watch' | 'hooks';
 
 type MainTab = {
   label: string;
@@ -33,6 +34,11 @@ const MAIN_TABS: MainTab[] = [
     label: 'Stop Watch',
     id: 'stop-watch',
     component: StopWatch,
+  },
+  {
+    label: 'Hooks',
+    id: 'hooks',
+    component: HooksDemoPage,
   },
 ];
 
