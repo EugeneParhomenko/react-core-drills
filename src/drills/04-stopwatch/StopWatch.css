@@ -62,7 +62,7 @@
     border-color 0.15s ease;
 }
 
-.stopwatch__controls button:hover:not(:disabled) {
+.stopwatch__controls button:not(:disabled):hover {
   border-color: var(--accent-border);
   background: var(--accent-bg);
 }

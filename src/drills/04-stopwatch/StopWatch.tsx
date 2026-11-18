@@ -1,26 +1,37 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { formatLapTime } from './formatLapTime';
 import './StopWatch.css';
 import { StopWatchLap } from './StopWatchLap';
+import type { Lap } from './type';
 import { useLapTimer } from './useLapTimer';
 
 export function StopWatch() {
-  const [laps, setLaps] = useState<number[]>([]);
-  const { lapTime, isRunning, start, pause, reset } = useLapTimer();
+  const [laps, setLaps] = useState<Lap[]>([]);
+  const { lapTime, isRunning, start, pause, reset, lap } = useLapTimer();
   const activeLapTime = formatLapTime(lapTime);
 
+  useEffect(() => {
+    if (isRunning) {
+      document.title = `StopWatch - ${activeLapTime}`;
+    } else {
+      document.title = 'StopWatch';
+    }
+  }, [isRunning, activeLapTime]);
+
   function handleLap() {
-    setLaps((laps) => [...laps, lapTime]);
-    reset();
+    const newLap: Lap = {
+      id: crypto.randomUUID(),
+      time: lap(),
+    };
+    setLaps((laps) => [...laps, newLap]);
   }
 
-  function handleRemoveLap(index: number) {
-    setLaps((laps) => laps.filter((_, i) => i !== index));
+  function handleRemoveLap(id: string) {
+    setLaps((laps) => laps.filter((lap) => lap.id !== id));
   }
 
   function handleClearLaps() {
     setLaps([]);
-    reset();
   }
 
   return (
@@ -35,23 +46,27 @@ export function StopWatch() {
         <button type="button" disabled={isRunning} onClick={start}>
           Start
         </button>
-        <button type="button" onClick={pause}>
+        <button type="button" disabled={!isRunning} onClick={pause}>
           Pause
         </button>
-        <button type="button" onClick={reset}>
+        <button
+          type="button"
+          disabled={!isRunning && lapTime === 0}
+          onClick={reset}
+        >
           Reset
         </button>
-        <button type="button" onClick={handleLap}>
+        <button type="button" disabled={!isRunning} onClick={handleLap}>
           Lap
         </button>
       </div>
       <ul className="stopwatch__laps">
-        {laps.map((lapTime, index) => (
+        {laps.map((lapItem, index) => (
           <StopWatchLap
-            key={index}
+            key={lapItem.id}
             index={index}
-            lapTime={lapTime}
-            removeLap={() => handleRemoveLap(index)}
+            lap={lapItem}
+            onRemove={() => handleRemoveLap(lapItem.id)}
           />
         ))}
       </ul>

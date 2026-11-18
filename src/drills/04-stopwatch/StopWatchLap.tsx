@@ -1,13 +1,14 @@
 import { formatLapTime } from './formatLapTime';
+import type { Lap } from './type';
 
 export type StopWatchLapProps = {
   index: number;
-  lapTime: number;
-  removeLap: () => void;
+  lap: Lap;
+  onRemove: () => void;
 };
 
-export function StopWatchLap({ index, lapTime, removeLap }: StopWatchLapProps) {
-  const formattedTime = formatLapTime(lapTime);
+export function StopWatchLap({ index, lap, onRemove }: StopWatchLapProps) {
+  const formattedTime = formatLapTime(lap.time);
   return (
     <li className="stopwatch-lap">
       <span className="stopwatch-lap__index">{index + 1}</span>
@@ -15,7 +16,7 @@ export function StopWatchLap({ index, lapTime, removeLap }: StopWatchLapProps) {
       <button
         type="button"
         className="stopwatch-lap__remove"
-        onClick={removeLap}
+        onClick={onRemove}
       >
         Remove
       </button>

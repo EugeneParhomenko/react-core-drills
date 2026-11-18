@@ -1,28 +1,22 @@
 import { useState } from 'react';
 import { useInterval } from './useInterval';
 
-function measureLapTime(
-  baseLapTime: number,
-  lapStartedAt: number | null,
-): number {
-  if (lapStartedAt === null) return baseLapTime;
-  return baseLapTime + (performance.now() - lapStartedAt);
-}
-
 const TICK_MS = 10;
 
 export function useLapTimer() {
   const [baseLapTime, setBaseLapTime] = useState(0);
   const [lapStartedAt, setLapStartedAt] = useState<number | null>(null);
-  const [, setTick] = useState(0);
-
+  const [now, setNow] = useState(() => performance.now());
+  useInterval(
+    () => setNow(performance.now()),
+    lapStartedAt !== null ? TICK_MS : null,
+  );
+  const lapTime =
+    lapStartedAt === null ? baseLapTime : baseLapTime + (now - lapStartedAt);
   const isRunning = lapStartedAt !== null;
-  const delay = isRunning ? TICK_MS : null;
-  const lapTime = measureLapTime(baseLapTime, lapStartedAt);
-
-  useInterval(() => setTick((value) => value + 1), delay);
 
   function start() {
+    setNow(performance.now());
     setLapStartedAt((lapStartedAt) =>
       lapStartedAt === null ? performance.now() : lapStartedAt,
     );
@@ -41,11 +35,21 @@ export function useLapTimer() {
     setLapStartedAt(null);
   }
 
+  function lap(): number {
+    const now = performance.now();
+    const measured =
+      lapStartedAt === null ? baseLapTime : baseLapTime + (now - lapStartedAt);
+    setBaseLapTime(0);
+    setLapStartedAt(lapStartedAt === null ? null : now);
+    return measured;
+  }
+
   return {
     lapTime,
     isRunning,
     start,
     pause,
     reset,
+    lap,
   };
 }
