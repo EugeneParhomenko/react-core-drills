@@ -10,10 +10,18 @@ export function TodoCompletedCount({
   onClearCompleted,
 }: TodoCompletedCountProps) {
   return (
-    <div className="todo-list-footer">
-      <span>{itemsLeft} items left</span>
+    <div className="todo-footer">
+      <span className="todo-footer__count">
+        <strong>{itemsLeft}</strong> items left
+      </span>
       {hasCompleted && (
-        <button onClick={() => onClearCompleted()}>Clear Completed</button>
+        <button
+          type="button"
+          className="todo-footer__clear"
+          onClick={() => onClearCompleted()}
+        >
+          Clear completed
+        </button>
       )}
     </div>
   );

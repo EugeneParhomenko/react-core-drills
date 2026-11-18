@@ -10,9 +10,11 @@ export type TodoListProps = {
 
 export function TodoList({ todos, onToggle, onDelete, onEdit }: TodoListProps) {
   return (
-    <>
-      <div className="todo-list-items">
-        {todos.map((todo) => (
+    <ul className="todo-list">
+      {todos.length === 0 ? (
+        <li className="todo-list__empty">No todos in this view</li>
+      ) : (
+        todos.map((todo) => (
           <TodoItem
             key={todo.id}
             todo={todo}
@@ -20,8 +22,8 @@ export function TodoList({ todos, onToggle, onDelete, onEdit }: TodoListProps) {
             onDelete={onDelete}
             onEdit={onEdit}
           />
-        ))}
-      </div>
-    </>
+        ))
+      )}
+    </ul>
   );
 }

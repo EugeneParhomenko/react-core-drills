@@ -18,16 +18,26 @@ export function TodoFilter({
   onActiveFilterChange,
 }: TodoFilterProps) {
   return (
-    <div>
-      {FILTERS.map((filter) => (
-        <button
-          key={filter.value}
-          className={filter.value === activeFilter ? 'active' : ''}
-          onClick={() => onActiveFilterChange(filter.value)}
-        >
-          {filter.label}
-        </button>
-      ))}
+    <div className="todo-filter" role="tablist" aria-label="Filter todos">
+      {FILTERS.map((filter) => {
+        const isActive = filter.value === activeFilter;
+        return (
+          <button
+            key={filter.value}
+            type="button"
+            role="tab"
+            aria-selected={isActive}
+            className={
+              isActive
+                ? 'todo-filter__tab todo-filter__tab--active'
+                : 'todo-filter__tab'
+            }
+            onClick={() => onActiveFilterChange(filter.value)}
+          >
+            {filter.label}
+          </button>
+        );
+      })}
     </div>
   );
 }

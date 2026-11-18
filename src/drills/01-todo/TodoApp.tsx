@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useEffect, useReducer, useState } from 'react';
+import './TodoApp.css';
 import { TodoCompletedCount } from './TodoCompletedCount';
 import { TodoFilter } from './TodoFilter';
 import { TodoForm } from './TodoForm';
 import { TodoList } from './TodoList';
+import { todosReducer } from './todosReducer';
 import type { Todo, TodoStatus } from './type';
 
 const TODOS_LOCAL_STORAGE_KEY = 'todos';
@@ -26,8 +28,11 @@ const setTodosToLocalStorage = (todos: Todo[]) => {
 };
 
 export function TodoApp() {
-  const [todos, setTodos] = useState<Todo[]>(getTodosFromLocalStorage);
   const [activeFilter, setActiveFilter] = useState<TodoStatus>('all');
+  const [todos, dispatch] = useReducer(
+    todosReducer,
+    getTodosFromLocalStorage(),
+  );
 
   const filteredTodos = todos.filter((todo) => {
     if (activeFilter === 'all') return true;
@@ -38,45 +43,33 @@ export function TodoApp() {
   const itemsLeft = todos.filter((todo) => !todo.done).length;
   const hasCompleted = todos.some((todo) => todo.done);
 
-  const commit = (newTodos: Todo[]) => {
-    setTodosToLocalStorage(newTodos);
-    setTodos(newTodos);
-  };
+  useEffect(() => {
+    setTodosToLocalStorage(todos);
+  }, [todos]);
 
   const handleAddTodo = (title: string) => {
-    const newTodos = [
-      ...todos,
-      { id: crypto.randomUUID(), title, done: false },
-    ];
-    commit(newTodos);
+    dispatch({ type: 'ADD_TODO', payload: { title } });
   };
 
   const handleToggleTodo = (id: string) => {
-    const newTodos = todos.map((todo) =>
-      todo.id === id ? { ...todo, done: !todo.done } : todo,
-    );
-    commit(newTodos);
+    dispatch({ type: 'TOGGLE_TODO', payload: { id } });
   };
 
   const handleDeleteTodo = (id: string) => {
-    const newTodos = todos.filter((todo) => todo.id !== id);
-    commit(newTodos);
+    dispatch({ type: 'DELETE_TODO', payload: { id } });
   };
 
   const handleEditTodo = (id: string, title: string) => {
-    const newTodos = todos.map((todo) =>
-      todo.id === id ? { ...todo, title } : todo,
-    );
-    commit(newTodos);
+    dispatch({ type: 'EDIT_TODO', payload: { id, title } });
   };
 
   const handleClearCompleted = () => {
-    const newTodos = todos.filter((todo) => !todo.done);
-    commit(newTodos);
+    dispatch({ type: 'CLEAR_COMPLETED_TODOS' });
   };
 
   return (
     <div className="todo-app">
+      <h2 className="todo-app__title">Todo</h2>
       <TodoFilter
         activeFilter={activeFilter}
         onActiveFilterChange={setActiveFilter}

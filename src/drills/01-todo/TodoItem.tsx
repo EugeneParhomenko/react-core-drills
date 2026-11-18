@@ -28,14 +28,19 @@ export function TodoItem({ todo, onToggle, onDelete, onEdit }: TodoItemProps) {
   };
 
   return (
-    <div className="todo-item">
+    <li
+      className={`todo-item${todo.done ? ' todo-item--done' : ''}${editing ? ' todo-item--editing' : ''}`}
+    >
       <input
+        className="todo-item__checkbox"
         type="checkbox"
         checked={todo.done}
         onChange={() => onToggle(todo.id)}
+        aria-label={`Mark "${todo.title}" as ${todo.done ? 'incomplete' : 'complete'}`}
       />
       {editing ? (
         <input
+          className="todo-item__edit"
           type="text"
           autoFocus
           value={draft}
@@ -50,15 +55,17 @@ export function TodoItem({ todo, onToggle, onDelete, onEdit }: TodoItemProps) {
           }}
         />
       ) : (
-        <span onDoubleClick={startEdit}>{todo.title}</span>
+        <span className="todo-item__title" onDoubleClick={startEdit}>
+          {todo.title}
+        </span>
       )}
       <button
-        onClick={() => {
-          onDelete(todo.id);
-        }}
+        type="button"
+        className="todo-item__delete"
+        onClick={() => onDelete(todo.id)}
       >
         Delete
       </button>
-    </div>
+    </li>
   );
 }
