@@ -1,0 +1,99 @@
+.tabs-demo-page {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 36rem;
+  margin: 0 auto;
+  padding: 0 0.25rem 1rem;
+  box-sizing: border-box;
+}
+
+.tabs-demo__title {
+  margin: 0 0 0.25rem;
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--text-h);
+  text-align: center;
+}
+
+.tabs-demo__hint {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--text);
+  text-align: center;
+  line-height: 1.4;
+}
+
+.tabs-demo__section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.tabs-demo__section-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-h);
+  text-align: center;
+}
+
+.tabs-demo__section-desc {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--text);
+  text-align: center;
+  line-height: 1.45;
+}
+
+.tabs-demo__section-desc code {
+  font-size: 0.8em;
+}
+
+.tabs-demo-page .tabs {
+  margin: 0 auto;
+}
+
+.tabs-demo__external-btn {
+  align-self: center;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--accent-border);
+  border-radius: 8px;
+  background: var(--accent-bg);
+  color: var(--text-h);
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.tabs-demo__external-btn:hover {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent-bg) 65%, var(--accent) 35%);
+}
+
+.tabs-demo__external-btn:focus-visible {
+  outline: 2px solid var(--accent-border);
+  outline-offset: 2px;
+}
+
+.tabs-demo__active-label {
+  margin: 0;
+  padding: 0.65rem 0.85rem;
+  border-radius: 8px;
+  background: var(--social-bg);
+  border: 1px solid var(--border);
+  font-size: 0.9rem;
+  color: var(--text);
+  text-align: center;
+}
+
+.tabs-demo__active-label strong {
+  color: var(--text-h);
+  font-weight: 600;
+}

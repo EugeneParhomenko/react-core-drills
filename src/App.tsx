@@ -5,8 +5,9 @@ import { KeyBugDemo } from './drills/02-key-bug/KeyBugDemo';
 import { ProfilePage } from './drills/03-profile/ProfilePage';
 import { StopWatch } from './drills/04-stopwatch/StopWatch';
 import { HooksDemoPage } from './drills/05-hooks/HooksDemoPage';
+import { TabsDemo } from './drills/06-tabs/TabsDemo';
 
-type MainTabId = 'todo' | 'key-bug' | 'profile' | 'stop-watch' | 'hooks';
+type MainTabId = 'todo' | 'key-bug' | 'profile' | 'stop-watch' | 'hooks' | 'tabs';
 
 type MainTab = {
   label: string;
@@ -39,6 +40,11 @@ const MAIN_TABS: MainTab[] = [
     label: 'Hooks',
     id: 'hooks',
     component: HooksDemoPage,
+  },
+  {
+    label: 'Tabs',
+    id: 'tabs',
+    component: TabsDemo,
   },
 ];
 
