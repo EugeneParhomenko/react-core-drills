@@ -11,61 +11,37 @@ type MainTabId =
 type MainTab = {
   label: string;
   id: MainTabId;
+  component: React.ComponentType;
 };
 
 export const MAIN_TABS: MainTab[] = [
   {
     label: 'Todo',
     id: 'todo',
+    component: TodoApp,
   },
   {
     label: 'Key Bug',
     id: 'key-bug',
+    component: KeyBugDemo,
   },
   {
     label: 'Profile',
     id: 'profile',
+    component: ProfilePage,
   },
   {
     label: 'Stop Watch',
     id: 'stop-watch',
+    component: StopWatch,
   },
   {
     label: 'Hooks',
     id: 'hooks',
-  },
-  {
-    label: 'Tabs',
-    id: 'tabs',
-  },
-];
-
-type MainPanel = {
-  id: MainTabId;
-  component: React.ComponentType;
-};
-export const MAIN_PANELS: MainPanel[] = [
-  {
-    id: 'todo',
-    component: TodoApp,
-  },
-  {
-    id: 'key-bug',
-    component: KeyBugDemo,
-  },
-  {
-    id: 'profile',
-    component: ProfilePage,
-  },
-  {
-    id: 'stop-watch',
-    component: StopWatch,
-  },
-  {
-    id: 'hooks',
     component: HooksDemoPage,
   },
   {
+    label: 'Tabs',
     id: 'tabs',
     component: TabsDemo,
   },

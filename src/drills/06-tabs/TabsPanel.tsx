@@ -18,7 +18,6 @@ export function TabsPanel({ children, value }: TabsPanelProps) {
       id={panelId}
       tabIndex={0}
       hidden={!isActive}
-      aria-hidden={!isActive}
     >
       {isActive && children}
     </div>

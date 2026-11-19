@@ -1,12 +1,12 @@
 import './App.css';
-import { MAIN_PANELS, MAIN_TABS } from './AppTabs.const';
+import { MAIN_TABS } from './AppTabs.const';
 import { Tabs } from './drills/06-tabs/Tabs';
 
 function App() {
   return (
     <div className="app">
       <Tabs defaultValue="todo">
-        <div className="main-tabs" aria-label="Drills">
+        <div className="main-tabs">
           <Tabs.List aria-label="Drills">
             {MAIN_TABS.map((tab) => (
               <Tabs.Trigger key={tab.id} value={tab.id}>
@@ -16,8 +16,8 @@ function App() {
           </Tabs.List>
         </div>
         <main className="main-content">
-          {MAIN_PANELS.map((panel) => (
-            <Tabs.Panel value={panel.id}>
+          {MAIN_TABS.map((panel) => (
+            <Tabs.Panel key={panel.id} value={panel.id}>
               <panel.component />
             </Tabs.Panel>
           ))}
