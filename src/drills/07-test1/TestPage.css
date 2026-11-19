@@ -1,0 +1,211 @@
+.test-page {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 1.25rem;
+  width: 100%;
+  max-width: 32rem;
+  margin: 0 auto;
+  padding: 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  text-align: left;
+  box-sizing: border-box;
+}
+
+.test-page__title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--text-h);
+  text-align: center;
+}
+
+.test-page__hint {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--text);
+  text-align: center;
+  line-height: 1.4;
+}
+
+.test-page__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.test-page__id {
+  padding: 0.35rem 0.65rem;
+  border-radius: 999px;
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  color: var(--text-h);
+}
+
+.test-page__btn {
+  min-width: 5.5rem;
+  padding: 0.5rem 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--text-h);
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.test-page__btn:hover:not(:disabled) {
+  border-color: var(--accent-border);
+  background: var(--accent-bg);
+}
+
+.test-page__btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.test-page__btn:focus-visible {
+  outline: 2px solid var(--accent-border);
+  outline-offset: 2px;
+}
+
+.test-page__status {
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.test-page__status--idle {
+  background: var(--social-bg);
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+
+.test-page__status--loading {
+  background: var(--accent-bg);
+  border: 1px solid var(--accent-border);
+  color: var(--text-h);
+}
+
+.test-page__status--success {
+  background: color-mix(in srgb, #22c55e 12%, var(--bg));
+  border: 1px solid color-mix(in srgb, #22c55e 40%, var(--border));
+  color: var(--text-h);
+}
+
+.test-page__status--error {
+  background: color-mix(in srgb, #ef4444 12%, var(--bg));
+  border: 1px solid color-mix(in srgb, #ef4444 45%, var(--border));
+  color: var(--text-h);
+}
+
+.test-page__placeholder {
+  margin: 0;
+  padding: 1rem;
+  border-radius: 8px;
+  background: var(--code-bg);
+  color: var(--text);
+  font-size: 0.9rem;
+  text-align: center;
+  line-height: 1.45;
+}
+
+.test-page__error {
+  margin: 0;
+  padding: 0.75rem 0.85rem;
+  border-radius: 8px;
+  background: color-mix(in srgb, #ef4444 10%, var(--bg));
+  border: 1px solid color-mix(in srgb, #ef4444 35%, var(--border));
+  color: var(--text-h);
+  font-size: 0.9rem;
+}
+
+.test-page__user {
+  display: grid;
+  grid-template-columns: 4.5rem 1fr;
+  gap: 1rem;
+  align-items: center;
+  padding: 1rem;
+  border-radius: 8px;
+  background: var(--social-bg);
+  border: 1px solid var(--border);
+}
+
+.test-page__avatar {
+  width: 4.5rem;
+  height: 4.5rem;
+  border-radius: 999px;
+  object-fit: cover;
+  border: 1px solid var(--border);
+}
+
+.test-page__user-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.test-page__user-name {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text-h);
+}
+
+.test-page__user-meta {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--text);
+  word-break: break-word;
+}
+
+.test-page__user-meta--mono {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+}
+
+.test-page__debug {
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.test-page__debug-summary {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text);
+  cursor: pointer;
+  user-select: none;
+  background: var(--social-bg);
+}
+
+.test-page__debug-summary:hover {
+  color: var(--text-h);
+}
+
+.test-page__debug pre {
+  margin: 0;
+  padding: 0.75rem;
+  max-height: 12rem;
+  overflow: auto;
+  font-size: 0.72rem;
+  line-height: 1.35;
+  background: var(--code-bg);
+  color: var(--text-h);
+}
