@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import './TabsDemo.css';
 import { Tabs } from './Tabs';
+import './TabsDemo.css';
 
 const CONTROLLED_TAB_LABELS: Record<string, string> = {
   home: 'Головна',
@@ -18,7 +18,10 @@ export function TabsDemo() {
         Неконтрольований і контрольований режими compound-компонента.
       </p>
 
-      <section className="tabs-demo__section" aria-labelledby="tabs-uncontrolled-heading">
+      <section
+        className="tabs-demo__section"
+        aria-labelledby="tabs-uncontrolled-heading"
+      >
         <h3 id="tabs-uncontrolled-heading" className="tabs-demo__section-title">
           Неконтрольований
         </h3>
@@ -52,7 +55,10 @@ export function TabsDemo() {
         </Tabs>
       </section>
 
-      <section className="tabs-demo__section" aria-labelledby="tabs-controlled-heading">
+      <section
+        className="tabs-demo__section"
+        aria-labelledby="tabs-controlled-heading"
+      >
         <h3 id="tabs-controlled-heading" className="tabs-demo__section-title">
           Контрольований
         </h3>
@@ -74,8 +80,7 @@ export function TabsDemo() {
             <Tabs.Trigger value="notifications">Сповіщення</Tabs.Trigger>
           </Tabs.List>
           <Tabs.Panel value="home">
-            Зовнішній стан: поточне значення —{' '}
-            <code>{activeTab}</code>.
+            Зовнішній стан: поточне значення — <code>{activeTab}</code>.
           </Tabs.Panel>
           <Tabs.Panel value="profile">
             Профіль користувача. Спробуй кнопку знизу або перемикай вкладки.
@@ -86,9 +91,7 @@ export function TabsDemo() {
         </Tabs>
         <p className="tabs-demo__active-label">
           Активна вкладка:{' '}
-          <strong>
-            {CONTROLLED_TAB_LABELS[activeTab] ?? activeTab}
-          </strong>
+          <strong>{CONTROLLED_TAB_LABELS[activeTab] ?? activeTab}</strong>
         </p>
       </section>
     </div>
