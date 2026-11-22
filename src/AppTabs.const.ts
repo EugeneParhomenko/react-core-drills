@@ -5,9 +5,17 @@ import { StopWatch } from './drills/04-stopwatch/StopWatch';
 import { HooksDemoPage } from './drills/05-hooks/HooksDemoPage';
 import { TabsDemo } from './drills/06-tabs/TabsDemo';
 import { TestPage } from './drills/07-test1/TestPage';
+import MemoDemoPage from './drills/08-memo/MemoDemoPage';
 
 type MainTabId =
-  'todo' | 'key-bug' | 'profile' | 'stop-watch' | 'hooks' | 'tabs' | 'test1';
+  | 'todo'
+  | 'key-bug'
+  | 'profile'
+  | 'stop-watch'
+  | 'hooks'
+  | 'tabs'
+  | 'test1'
+  | 'memo';
 
 type MainTab = {
   label: string;
@@ -50,5 +58,10 @@ export const MAIN_TABS: MainTab[] = [
     label: 'Tabs',
     id: 'tabs',
     component: TabsDemo,
+  },
+  {
+    label: 'Memo',
+    id: 'memo',
+    component: MemoDemoPage,
   },
 ];
